@@ -183,7 +183,7 @@ export default function WorkoutDetailView({ workout }: WorkoutDetailViewProps) {
           </div>
 
           {/* Action Buttons */}
-          <div className="mt-8 flex flex-wrap items-center gap-3.5">
+          <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
             {/* Add to today's plan */}
             <button
               onClick={handlePlanClick}

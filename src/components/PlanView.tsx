@@ -7,7 +7,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useWorkout } from "@/context/WorkoutContext";
 import toast from "react-hot-toast";
 
-type SortOption = "duration-asc" | "duration-desc" | "calories-desc" | "rating-desc" | "name-asc";
+type SortOption = "duration" | "calories" | "rating";
 
 export default function PlanView() {
   const searchParams = useSearchParams();
@@ -26,7 +26,7 @@ export default function PlanView() {
 
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<"plan" | "saved">(initialTab);
-  const [sortBy, setSortBy] = useState<SortOption>("duration-desc");
+  const [sortBy, setSortBy] = useState<SortOption>("duration");
   const [completedWorkouts, setCompletedWorkouts] = useState<number[]>([]);
 
   // Sync tab with URL search parameter
@@ -72,16 +72,12 @@ export default function PlanView() {
   const sortedWorkouts = useMemo(() => {
     const list = [...currentList];
     switch (sortBy) {
-      case "duration-desc":
+      case "duration":
         return list.sort((a, b) => b.duration - a.duration);
-      case "duration-asc":
-        return list.sort((a, b) => a.duration - b.duration);
-      case "calories-desc":
+      case "calories":
         return list.sort((a, b) => b.caloriesBurned - a.caloriesBurned);
-      case "rating-desc":
+      case "rating":
         return list.sort((a, b) => b.rating - a.rating);
-      case "name-asc":
-        return list.sort((a, b) => a.name.localeCompare(b.name));
       default:
         return list;
     }
@@ -169,11 +165,9 @@ export default function PlanView() {
               onChange={(e) => setSortBy(e.target.value as SortOption)}
               className="appearance-none bg-[#0f1218] border border-zinc-800 text-xs sm:text-sm font-semibold text-zinc-200 rounded-xl px-4 py-2 pr-9 hover:border-zinc-700 focus:outline-none focus:border-[#ccff00] cursor-pointer transition-colors"
             >
-              <option value="duration-desc">Duration (High to Low)</option>
-              <option value="duration-asc">Duration (Low to High)</option>
-              <option value="calories-desc">Calories (High to Low)</option>
-              <option value="rating-desc">Rating (Top Rated)</option>
-              <option value="name-asc">Name (A-Z)</option>
+              <option value="duration">Duration</option>
+              <option value="calories">Calories</option>
+              <option value="rating">Rating</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-zinc-400">
               <svg
@@ -221,18 +215,18 @@ export default function PlanView() {
             return (
               <div
                 key={workout.id}
-                className={`group relative flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 sm:gap-6 rounded-2xl border bg-[#0f1218] p-4 sm:p-5 transition-all duration-200 ${
+                className={`group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 rounded-2xl border bg-[#0f1218] p-4 sm:p-5 transition-all duration-200 ${
                   isCompleted
                     ? "border-emerald-500/40 bg-[#0f141a]"
                     : "border-zinc-800/80 hover:border-zinc-700 hover:shadow-[0_8px_30px_rgb(0,0,0,0.4)]"
                 }`}
               >
                 {/* Left Side: Thumbnail + Information */}
-                <div className="flex items-center gap-4 sm:gap-5 flex-1 min-w-0">
+                <div className="flex items-center gap-3.5 sm:gap-5 flex-1 min-w-0 w-full sm:w-auto">
                   {/* Thumbnail */}
                   <Link
                     href={`/workout/${workout.id}`}
-                    className="relative w-28 h-20 sm:w-36 sm:h-22 rounded-xl overflow-hidden bg-zinc-900 shrink-0 group/img"
+                    className="relative w-24 h-20 sm:w-36 sm:h-22 rounded-xl overflow-hidden bg-zinc-900 shrink-0 group/img"
                   >
                     <Image
                       src={workout.image}
@@ -255,7 +249,7 @@ export default function PlanView() {
                     </p>
 
                     {/* Stats Row */}
-                    <div className="mt-2.5 flex flex-wrap items-center gap-3.5 sm:gap-4 text-xs text-zinc-400">
+                    <div className="mt-2.5 flex flex-wrap items-center gap-3 sm:gap-4 text-xs text-zinc-400">
                       {/* Duration */}
                       <div className="flex items-center gap-1.5">
                         <svg
@@ -305,7 +299,7 @@ export default function PlanView() {
                 </div>
 
                 {/* Right Side: Action Controls */}
-                <div className="flex items-center gap-2.5 sm:gap-3 shrink-0 self-end md:self-center">
+                <div className="flex items-center gap-2 sm:gap-3 shrink-0 self-end sm:self-center w-full sm:w-auto justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-800/60">
                   {/* View Details Button */}
                   <Link
                     href={`/workout/${workout.id}`}
