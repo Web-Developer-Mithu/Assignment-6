@@ -114,6 +114,6 @@ export default function WorkoutCard({ workout }: WorkoutCardProps) {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
