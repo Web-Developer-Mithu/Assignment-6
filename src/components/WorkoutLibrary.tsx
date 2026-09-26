@@ -19,7 +19,7 @@ export default async function WorkoutLibrary() {
   const workouts = await getWorkouts();
 
   return (
-    <section id="workouts" className="w-full mt-12 sm:mt-16">
+    <section id="library" className="w-full mt-12 sm:mt-16 scroll-mt-20">
       {/* Section Header */}
       <div className="mb-6 sm:mb-8">
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-white uppercase">

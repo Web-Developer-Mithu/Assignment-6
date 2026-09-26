@@ -52,16 +52,16 @@ export default function WorkoutDetailView({ workout }: WorkoutDetailViewProps) {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-        {/* Left Column: Big Image */}
-        <div className="lg:col-span-6 w-full flex justify-center">
-          <div className="relative aspect-square w-full max-w-[540px] rounded-3xl overflow-hidden border border-zinc-800/80 bg-[#0f1218] shadow-2xl">
+        {/* Left Column: Big Image / Visual Media */}
+        <div className="lg:col-span-6 w-full lg:sticky lg:top-24">
+          <div className="relative aspect-square w-full rounded-3xl overflow-hidden border border-zinc-800/80 bg-[#0f1218] shadow-2xl">
             <Image
               src={workout.image}
               alt={workout.name}
               fill
               priority
-              sizes="(max-width: 1024px) 100vw, 540px"
-              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover transition-transform duration-700 hover:scale-105"
             />
           </div>
         </div>
@@ -69,16 +69,16 @@ export default function WorkoutDetailView({ workout }: WorkoutDetailViewProps) {
         {/* Right Column: Workout Info */}
         <div className="lg:col-span-6 flex flex-col">
           {/* Title */}
-          <h1 className="text-3xl sm:text-4xl lg:text-[42px] font-black uppercase text-white tracking-tight leading-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-[40px] font-black uppercase text-white tracking-tight leading-tight">
             {workout.name}
           </h1>
 
-          {/* Description */}
+          {/* Subtitle / Description */}
           <p className="mt-3 text-sm sm:text-base text-zinc-400 leading-relaxed">
             {workout.description}
           </p>
 
-          {/* Muscle Group Badges */}
+          {/* Category / Muscle Group Tags */}
           <div className="mt-4 flex flex-wrap gap-2">
             {workout.muscleGroups.map((group) => (
               <span
@@ -90,7 +90,7 @@ export default function WorkoutDetailView({ workout }: WorkoutDetailViewProps) {
             ))}
           </div>
 
-          {/* Specs Table */}
+          {/* Key Specs Table / Panel */}
           <div className="mt-6 rounded-2xl border border-zinc-800/80 bg-[#0f1218] overflow-hidden divide-y divide-zinc-800/60 shadow-lg">
             <div className="flex items-center justify-between px-5 py-3.5">
               <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-zinc-400">
@@ -150,24 +150,33 @@ export default function WorkoutDetailView({ workout }: WorkoutDetailViewProps) {
               <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-zinc-400">
                 RATING
               </span>
-              <span className="text-xs sm:text-sm font-semibold text-white">
+              <span className="text-xs sm:text-sm font-semibold text-white flex items-center gap-1">
+                <svg
+                  className="w-3.5 h-3.5 text-[#ccff00]"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg>
                 {workout.rating}
               </span>
             </div>
           </div>
 
-          {/* Instructions */}
+          {/* Instructions Section */}
           <div className="mt-8">
-            <h2 className="text-sm sm:text-base font-black uppercase text-white tracking-wider mb-3">
+            <h2 className="text-sm sm:text-base font-black uppercase text-white tracking-wider mb-4">
               INSTRUCTIONS
             </h2>
-            <ol className="space-y-2.5 text-xs sm:text-sm text-zinc-300 leading-relaxed list-none">
+            <ol className="space-y-3 text-xs sm:text-sm text-zinc-300 leading-relaxed list-none">
               {workout.instructions.map((step, idx) => (
-                <li key={idx} className="flex items-start gap-2.5">
-                  <span className="font-bold text-zinc-400 shrink-0 select-none">
-                    {idx + 1}.
+                <li key={idx} className="flex items-start gap-3">
+                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-zinc-800 border border-zinc-700 text-[11px] font-black text-[#ccff00] shrink-0 mt-0.5 select-none">
+                    {idx + 1}
                   </span>
-                  <span>{step}</span>
+                  <span className="text-zinc-300 font-normal leading-relaxed">
+                    {step}
+                  </span>
                 </li>
               ))}
             </ol>
@@ -178,9 +187,9 @@ export default function WorkoutDetailView({ workout }: WorkoutDetailViewProps) {
             {/* Add to today's plan */}
             <button
               onClick={handlePlanClick}
-              className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-xs sm:text-sm font-extrabold transition-all duration-200 shadow-md active:scale-95 ${
+              className={`inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-xs sm:text-sm font-extrabold transition-all duration-200 shadow-md active:scale-95 cursor-pointer ${
                 inPlan
-                  ? "bg-zinc-800 text-[#ccff00] border border-[#ccff00]/40"
+                  ? "bg-zinc-800 text-[#ccff00] border border-[#ccff00]/40 hover:bg-zinc-700"
                   : "bg-[#ccff00] text-black hover:bg-[#d8ff33] hover:shadow-[0_0_20px_rgba(204,255,0,0.35)]"
               }`}
             >
@@ -206,10 +215,10 @@ export default function WorkoutDetailView({ workout }: WorkoutDetailViewProps) {
             {/* Save for later */}
             <button
               onClick={handleSaveClick}
-              className={`inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 text-xs sm:text-sm font-bold border transition-all duration-200 active:scale-95 ${
+              className={`inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-xs sm:text-sm font-bold border transition-all duration-200 active:scale-95 cursor-pointer ${
                 saved
-                  ? "bg-[#1c2e12] border-[#2f4d18] text-[#ccff00]"
-                  : "bg-[#10141c] border-zinc-700/80 text-zinc-200 hover:bg-zinc-800"
+                  ? "bg-[#1c2e12] border-[#2f4d18] text-[#ccff00] hover:bg-[#233a17]"
+                  : "bg-[#10141c] border-zinc-700/80 text-zinc-200 hover:bg-zinc-800 hover:text-white"
               }`}
             >
               <svg

@@ -31,12 +31,24 @@ export default function Hero() {
 
             {/* CTA Button */}
             <div className="mt-8">
-              <Link
-                href="#workouts"
-                className="inline-flex items-center justify-center rounded-lg bg-[#ccff00] px-6 py-3 text-xs sm:text-sm font-black tracking-wide text-black uppercase transition-all duration-200 hover:bg-[#d8ff33] hover:shadow-[0_0_20px_rgba(204,255,0,0.35)] active:scale-95"
+              <a
+                href="#library"
+                className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[#ccff00] px-6 py-3.5 text-xs sm:text-sm font-black tracking-wide text-black uppercase transition-all duration-200 hover:bg-[#d8ff33] hover:shadow-[0_0_20px_rgba(204,255,0,0.35)] active:scale-95 cursor-pointer"
               >
-                BROWSE WORKOUTS
-              </Link>
+                <span>BROWSE WORKOUTS</span>
+                <svg
+                  className="w-4 h-4 transition-transform duration-200 group-hover:translate-y-0.5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <polyline points="19 12 12 19 5 12" />
+                </svg>
+              </a>
             </div>
           </div>
 

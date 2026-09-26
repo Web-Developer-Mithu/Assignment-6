@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useWorkout } from "@/context/WorkoutContext";
 import toast from "react-hot-toast";
 
@@ -11,6 +11,7 @@ type SortOption = "duration-asc" | "duration-desc" | "calories-desc" | "rating-d
 
 export default function PlanView() {
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const initialTab = searchParams.get("tab") === "saved" ? "saved" : "plan";
 
   const {
@@ -40,7 +41,7 @@ export default function PlanView() {
 
   const handleTabChange = (tab: "plan" | "saved") => {
     setActiveTab(tab);
-    router.replace(`/plan?tab=${tab}`, { scroll: false });
+    router.replace(`${pathname}?tab=${tab}`, { scroll: false });
   };
 
   const toggleComplete = (workoutId: number, workoutName?: string) => {

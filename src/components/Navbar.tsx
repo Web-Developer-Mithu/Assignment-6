@@ -10,6 +10,8 @@ export default function Navbar() {
   const { planWorkouts, savedWorkouts } = useWorkout();
   const isWorkouts = pathname === "/" || pathname.startsWith("/workout");
 
+  const isPlan = pathname === "/my-plan" || pathname === "/plan";
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-zinc-900 bg-[#08080a]/90 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
@@ -29,9 +31,9 @@ export default function Navbar() {
             Workouts
           </Link>
           <Link
-            href="/plan"
+            href="/my-plan"
             className={`px-4 py-1 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 ${
-              pathname === "/plan"
+              isPlan
                 ? "bg-[#1d3010] text-[#ccff00] border border-[#2f4d18]"
                 : "text-zinc-400 hover:text-white"
             }`}
@@ -43,7 +45,7 @@ export default function Navbar() {
         {/* Right: Counter Badges */}
         <div className="flex items-center gap-4 sm:gap-6">
           <Link
-            href="/plan?tab=plan"
+            href="/my-plan?tab=plan"
             className="flex items-center gap-2 text-xs sm:text-sm font-medium text-zinc-300 hover:text-[#ccff00] transition-colors"
           >
             <span>Plan</span>
@@ -53,7 +55,7 @@ export default function Navbar() {
           </Link>
 
           <Link
-            href="/plan?tab=saved"
+            href="/my-plan?tab=saved"
             className="flex items-center gap-2 text-xs sm:text-sm font-medium text-zinc-300 hover:text-white transition-colors"
           >
             <span>Saved</span>
