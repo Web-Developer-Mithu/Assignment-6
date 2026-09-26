@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useWorkout } from "@/context/WorkoutContext";
+import toast from "react-hot-toast";
 
 type SortOption = "duration-asc" | "duration-desc" | "calories-desc" | "rating-desc" | "name-asc";
 
@@ -42,12 +43,19 @@ export default function PlanView() {
     router.replace(`/plan?tab=${tab}`, { scroll: false });
   };
 
-  const toggleComplete = (workoutId: number) => {
-    setCompletedWorkouts((prev) =>
-      prev.includes(workoutId)
-        ? prev.filter((id) => id !== workoutId)
-        : [...prev, workoutId]
-    );
+  const toggleComplete = (workoutId: number, workoutName?: string) => {
+    setCompletedWorkouts((prev) => {
+      const isDone = prev.includes(workoutId);
+      if (isDone) {
+        toast(`Marked ${workoutName || "lift"} as incomplete`, {
+          icon: "🔄",
+        });
+        return prev.filter((id) => id !== workoutId);
+      } else {
+        toast.success(`Completed ${workoutName || "lift"}! Keep going 💪`);
+        return [...prev, workoutId];
+      }
+    });
   };
 
   // Get current active list
@@ -308,7 +316,7 @@ export default function PlanView() {
                   {/* Main Action Button */}
                   {activeTab === "plan" ? (
                     <button
-                      onClick={() => toggleComplete(workout.id)}
+                      onClick={() => toggleComplete(workout.id, workout.name)}
                       className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-extrabold flex items-center gap-1.5 transition-all shadow-md active:scale-95 ${
                         isCompleted
                           ? "bg-zinc-800 text-[#ccff00] border border-[#ccff00]/40"

@@ -3,6 +3,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Workout } from "@/components/WorkoutCard";
 
+import toast from "react-hot-toast";
+
 interface WorkoutContextType {
   planWorkouts: Workout[];
   savedWorkouts: Workout[];
@@ -50,23 +52,35 @@ export function WorkoutProvider({ children }: { children: React.ReactNode }) {
   }, [savedWorkouts]);
 
   const addToPlan = (workout: Workout) => {
-    setPlanWorkouts((prev) => {
-      if (prev.some((w) => w.id === workout.id)) return prev;
-      return [...prev, workout];
-    });
+    if (planWorkouts.some((w) => w.id === workout.id)) {
+      toast(`${workout.name} is already in today's plan!`, {
+        icon: "ℹ️",
+      });
+      return;
+    }
+    if (planWorkouts.length >= 5) {
+      toast.error("Daily cap reached! Max 5 lifts allowed for today.");
+      return;
+    }
+    setPlanWorkouts((prev) => [...prev, workout]);
+    toast.success(`Added ${workout.name} to today's plan!`);
   };
 
   const removeFromPlan = (workoutId: number) => {
+    const item = planWorkouts.find((w) => w.id === workoutId);
     setPlanWorkouts((prev) => prev.filter((w) => w.id !== workoutId));
+    toast.success(item ? `Removed ${item.name} from plan` : "Removed lift from plan");
   };
 
   const toggleSave = (workout: Workout) => {
-    setSavedWorkouts((prev) => {
-      if (prev.some((w) => w.id === workout.id)) {
-        return prev.filter((w) => w.id !== workout.id);
-      }
-      return [...prev, workout];
-    });
+    const currentlySaved = savedWorkouts.some((w) => w.id === workout.id);
+    if (currentlySaved) {
+      setSavedWorkouts((prev) => prev.filter((w) => w.id !== workout.id));
+      toast.success(`Removed ${workout.name} from saved`);
+    } else {
+      setSavedWorkouts((prev) => [...prev, workout]);
+      toast.success(`Saved ${workout.name} for later!`);
+    }
   };
 
   const isSaved = (workoutId: number) => {
